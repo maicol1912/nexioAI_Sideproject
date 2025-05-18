@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/**/*",
+    ".vuepress/**/*",
+    "eslint.config.mjs",
+    "ormconfig.ts",
+    "**/*.js",
+    "**/*.mjs",
+    "**/*.cjs",
+    "**/*.ts"
+  ],
+  "exclude": [
+    ".vuepress/**/*",
+    "node_modules/**/*",
+    "dist/**/*",
+  ]
+}
