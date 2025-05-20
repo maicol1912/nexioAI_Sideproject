@@ -3,18 +3,18 @@ declare global {
   type Todo = unknown & { _todoBrand?: never };
 
   interface Array<T> {
-    toModels<Model extends import('./src/shared/domain/abstract/abstract.model').AbstractDto>(
+    toModels<Model extends AbstractDto>(
       this: T[],
-      options?: unknown,
+      options?: { toExclude?: string[] }
     ): Model[];
 
-    toPageDto<Dto extends import('./src/shared/domain/abstract/abstract.model').AbstractDto>(
+    toPageDto<Dto extends AbstractDto>(
       this: T[],
-      pageMetaDto: import('./src/shared/application/dtos/page-meta.dto').PageMetaDto,
-      options?: unknown,
-    ): import('./src/shared/application/dtos/page-meta.dto').PageDto<Dto>;
+      pageMetaDto: PageMetaDto,
+      options?: { toExclude?: string[] }
+    ): PageDto<Dto>;
   }
 }
 
 // Esto asegura que TypeScript trate este archivo como un módulo
-export {};
+export { };

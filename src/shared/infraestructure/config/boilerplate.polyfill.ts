@@ -71,24 +71,15 @@ declare module 'typeorm' {
   }
 }
 
-export const arrayUtils = {
-  toModels<Entity extends AbstractEntity<Dto>, Dto extends AbstractModel>(
-    items: Entity[],
-    options?: unknown,
-  ): Dto[] {
-    return _.compact(
-      _.map<Entity, Dto>(items, (item) => item.toModel(options as never)),
-    );
-  },
+Array.prototype.toModels = function <Model extends AbstractDto>(options?: { toExclude?: string[] }): Model[] {
+  return this.map((item) => item.toModel?.(options)).filter((item) => item !== null && item !== undefined) as Model[];
+};
 
-  
-  toPageDto<Entity extends AbstractEntity<Dto>, Dto extends AbstractModel>(
-    items: Entity[],
-    pageMetaDto: PageMetaDto,
-    options?: unknown,
-  ): PageDto<Dto> {
-    return new PageDto(arrayUtils.toModels(items, options), pageMetaDto);
-  },
+Array.prototype.toPageDto = function <Dto extends AbstractDto>(
+  pageMetaDto: PageMetaDto,
+  options?: { toExclude?: string[] }
+): PageDto<Dto> {
+  return new PageDto(this.toModels<Dto>(options), pageMetaDto);
 };
 
 SelectQueryBuilder.prototype.searchByString = function (

@@ -4,10 +4,9 @@ import { RoleType } from "src/modules/user/domain/models/role-type";
 import type { UserEntity } from "../../entities/user.entity";
 import { UseModelDto } from "@shared/application/decorators/use-model.dto.decorator";
 import { UserModel } from "src/modules/user/domain/models/user.model";
+import type { ModelOptions } from "@shared/domain/types/model.type";
 
 
-// TODO, remove this class and use constructor's second argument's type
-export type UserDtoOptions = Partial<{ isActive: boolean }>;
 
 @UseModelDto(UserModel)
 export class UserDto extends AbstractDto {
@@ -35,14 +34,13 @@ export class UserDto extends AbstractDto {
   @BooleanFieldOptional()
   isActive?: boolean;
 
-  constructor(user: UserEntity, options?: UserDtoOptions) {
-    super(user);
+  constructor(user: UserEntity, options?: ModelOptions) {
+    super(user, options);
     this.firstName = user.firstName;
     this.lastName = user.lastName;
     this.role = user.role;
     this.email = user.email;
     this.avatar = user.avatar;
     this.phone = user.phone;
-    this.isActive = options?.isActive;
   }
 }

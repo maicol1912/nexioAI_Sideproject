@@ -1,3 +1,4 @@
+import './shared/infraestructure/config/boilerplate.polyfill'
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { initializeTransactionalContext } from 'typeorm-transactional';

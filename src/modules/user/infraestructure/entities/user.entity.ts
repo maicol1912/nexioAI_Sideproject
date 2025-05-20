@@ -1,7 +1,6 @@
-import { AbstractEntity} from "@shared/domain/abstract/abstract.entity";
+import { AbstractEntity } from "@shared/domain/abstract/abstract.entity";
 import { RoleType } from "src/modules/user/domain/models/role-type";
 import { Entity, Column, VirtualColumn, OneToOne } from "typeorm";
-import { UserDto, type UserDtoOptions } from "../controllers/dtos/user.dto";
 import { UserSettingsEntity } from "./user-settings.entity";
 import { UserModel } from "../../domain/models/user.model";
 import { UseModel } from "@shared/application/decorators/use-model.decorator";

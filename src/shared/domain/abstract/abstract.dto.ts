@@ -1,4 +1,6 @@
+import { autoMapFields } from '@shared/infraestructure/utils/auto-map-fields.util';
 import { DateField, UUIDField } from '../../application/decorators/field.decorators';
+import type { ModelOptions } from '../types/model.type';
 
 export abstract class AbstractDto {
   @UUIDField()
@@ -10,21 +12,24 @@ export abstract class AbstractDto {
   @DateField()
   updatedAt!: Date;
 
-  constructor(model: any, options?: { excludeFields?: boolean }) {
-    if (!options?.excludeFields) {
-      this.id = model.id;
-      this.createdAt = model.createdAt;
-      this.updatedAt = model.updatedAt;
-    }
+  constructor(model: any, options?: ModelOptions) {
+    console.log('entre aca')
+    autoMapFields(this, model, options);
   }
 
-  static fromModel<T extends AbstractDto>(this: new (model: any, options?: any) => T, model: any, options?: any): T {
+  static fromModel<T extends AbstractDto>(
+    this: new (model: any, options?: ModelOptions) => T,
+    model: any,
+    options?: ModelOptions
+  ): T {
     return new this(model, options);
   }
-}
 
-export class AbstractTranslationDto extends AbstractDto {
-  constructor(model: any) {
-    super(model, { excludeFields: true });
+  static fromModels<T extends AbstractDto>(
+    this: new (model: any, options?: ModelOptions) => T,
+    models: any[],
+    options?: ModelOptions
+  ): T[] {
+    return models.map((model) => new this(model, options));
   }
 }
