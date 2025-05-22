@@ -1,10 +1,8 @@
-import { StringFieldOptional, EnumFieldOptional, EmailFieldOptional, PhoneFieldOptional, BooleanFieldOptional } from "@shared/application/decorators/field.decorators";
+import { StringFieldOptional, StringField, EnumField, EmailField, PhoneField, BooleanField } from "@shared/application/decorators/field.decorators";
 import { AbstractDto } from "@shared/domain/abstract/abstract.dto";
 import { RoleType } from "src/modules/user/domain/models/role-type";
-import type { UserEntity } from "../../entities/user.entity";
 import { UseModelDto } from "@shared/application/decorators/use-model.dto.decorator";
 import { UserModel } from "src/modules/user/domain/models/user.model";
-import type { ModelOptions } from "@shared/domain/types/model.type";
 
 
 
@@ -13,34 +11,24 @@ export class UserDto extends AbstractDto {
   @StringFieldOptional({ nullable: true })
   firstName?: string | null;
 
-  @StringFieldOptional({ nullable: true })
+  @StringField({ nullable: false })
   lastName?: string | null;
 
-  @StringFieldOptional({ nullable: true })
+  @StringField({ nullable: true })
   username!: string;
 
-  @EnumFieldOptional(() => RoleType)
+  @EnumField(() => RoleType)
   role?: RoleType;
 
-  @EmailFieldOptional({ nullable: true })
+  @EmailField({ nullable: true })
   email?: string | null;
 
-  @StringFieldOptional({ nullable: true })
+  @StringField({ nullable: true })
   avatar?: string | null;
 
-  @PhoneFieldOptional({ nullable: true })
+  @PhoneField({ nullable: true, region: 'CO' })
   phone?: string | null;
 
-  @BooleanFieldOptional()
+  @BooleanField()
   isActive?: boolean;
-
-  constructor(user: UserEntity, options?: ModelOptions) {
-    super(user, options);
-    this.firstName = user.firstName;
-    this.lastName = user.lastName;
-    this.role = user.role;
-    this.email = user.email;
-    this.avatar = user.avatar;
-    this.phone = user.phone;
-  }
 }

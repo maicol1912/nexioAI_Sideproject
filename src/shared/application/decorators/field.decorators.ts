@@ -44,6 +44,7 @@ interface IFieldOptions {
   swagger?: boolean;
   nullable?: boolean;
   groups?: string[];
+  region?: string;
 }
 
 interface INumberFieldOptions extends IFieldOptions {
@@ -375,7 +376,9 @@ export function EmailFieldOptional(
 export function PhoneField(
   options: Omit<ApiPropertyOptions, 'type'> & IFieldOptions = {},
 ): PropertyDecorator {
-  const decorators = [IsPhoneNumber()];
+  const decorators = [
+    IsPhoneNumber({ region: (options.region ?? 'CO') as any }),
+  ];
 
   if (options.nullable) {
     decorators.push(IsNullable());

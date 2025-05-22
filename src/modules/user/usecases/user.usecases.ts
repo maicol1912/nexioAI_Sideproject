@@ -7,9 +7,9 @@ import { UserNotFoundException } from "../domain/exceptions/user-not-found.excep
 export class UserUseCases {
     constructor(private readonly userRepository: UserRepository, private readonly bcryptService: IBcryptService) { }
 
-    async createUser(user: UserModel):Promise<UserModel> {
-        user.password = await this.bcryptService.hash(user.password ?? '')
-        return await this.userRepository.saveUser(user)
+    async createUser(user: UserModel): Promise<UserModel> {
+        const userSaved = await this.userRepository.saveUser(user);
+        return userSaved
     }
 
     async findAll(): Promise<Array<UserModel>> {

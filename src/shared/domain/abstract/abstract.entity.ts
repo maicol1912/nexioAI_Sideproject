@@ -1,8 +1,6 @@
-// src/shared/domain/abstract/abstract.entity.ts
 import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import type { ModelOptions } from '../types/model.type';
 
-export abstract class AbstractEntity<M = any> {
+export abstract class AbstractEntity<M = any, O = never> {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -12,7 +10,7 @@ export abstract class AbstractEntity<M = any> {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date;
 
-  toModel(options?: ModelOptions): M {
+  toModel(options?: O): M {
     const modelClass = (this.constructor as any).prototype.modelClass;
 
     if (!modelClass) {

@@ -14,7 +14,8 @@ export class DatabaseUserRepository implements UserRepository {
   ) { }
 
   async saveUser(user: UserModel): Promise<UserModel> {
-    return (await this.userEntityRepository.save(user)).toModel()
+    const userSaved = await this.userEntityRepository.save(user);
+    return this.userEntityRepository.create(userSaved).toModel();
   }
 
   async findAll(): Promise<Array<UserModel>> {
@@ -22,9 +23,9 @@ export class DatabaseUserRepository implements UserRepository {
     return users.toModels();
   }
 
-  async findOne(id:string): Promise<UserModel | undefined > {
-    const user = await this.userEntityRepository.findOne({where : { id }})
-    
+  async findOne(id: string): Promise<UserModel | undefined> {
+    const user = await this.userEntityRepository.findOne({ where: { id } })
+
     return user?.toModel()
   }
 

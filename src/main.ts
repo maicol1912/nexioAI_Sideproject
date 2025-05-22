@@ -1,5 +1,5 @@
 import './shared/infraestructure/config/boilerplate.polyfill'
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { initializeTransactionalContext } from 'typeorm-transactional';
 import helmet from 'helmet';
@@ -9,7 +9,7 @@ import { ClassSerializerInterceptor, HttpStatus, UnprocessableEntityException, V
 import { SharedModule } from './shared/shared.module';
 import { Transport } from '@nestjs/microservices';
 import { Reflector } from '@nestjs/core';
-import { HttpExceptionFilter } from './shared/application/filters/bad-request.filter';
+import { GlobalExceptionHandler, HttpExceptionFilter } from './shared/application/filters/bad-request.filter';
 import { QueryFailedFilter } from './shared/application/filters/query-failed.filter';
 import { EnvironmentConfigService } from './enviroment-config/environment-config.service';
 import { GlobalResponseInterceptor } from './shared/application/interceptors/response-interceptor.service';
@@ -26,10 +26,11 @@ async function bootstrap() {
   app.enableVersioning();
 
   const reflector = app.get(Reflector);
-
+  const httpAdapterHost = app.get(HttpAdapterHost)
   app.useGlobalFilters(
     new HttpExceptionFilter(reflector),
     new QueryFailedFilter(reflector),
+    new GlobalExceptionHandler(httpAdapterHost)
   );
 
   app.useGlobalInterceptors(
